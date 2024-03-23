@@ -1,0 +1,529 @@
+openapi: 3.1.0
+x-stoplight:
+  id: cmsjhl0aal4xt
+info:
+  title: SistemTerdistribusi
+  version: '1.0'
+  summary: REST API Tugas Sistem Terdistribusi
+  description: ' Tugas Sistem Terdistribusi, API yang meneyediakan  method  login, resource, logout, profile. Pada resource terdapat CRUD'
+  contact:
+    name: 'Jefta '
+    email: jefta.supraja@gmail.com
+  termsOfService: test.com/tos
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /users:
+    get:
+      summary: GET Akun
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    x-stoplight:
+                      id: nx1nkz56hlwd0
+                  name:
+                    type: string
+                    x-stoplight:
+                      id: 8shy9zj3n50so
+                  emial:
+                    type: string
+                    x-stoplight:
+                      id: ds3vdguq6ry34
+              examples:
+                Example 1:
+                  value:
+                    id: 1
+                    name: Jefta
+                    email: jefta.supraja@gmail.com
+      operationId: get-users
+      description: Mendapatkan data profile user
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Bearer Token
+          description: Token untuk mengakses ke data penggunan
+    post:
+      summary: Register
+      operationId: post-users
+      responses:
+        '201':
+          description: 'jika akun berhasil ditambahkan , akan dikembalikkan respons sebagai berikut'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: 81z074h52cc06
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: 720b5wljieo0u
+              examples:
+                Example 1:
+                  value:
+                    error: false
+                    message: akun berhasil digunakan
+          headers: {}
+        '400':
+          description: 'Jika email sudah digunakan, akan mengembalikan respon sebagai berikut'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: fb83lkc1g2qjp
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: yyr2496we3wep
+              examples:
+                Example 1:
+                  value:
+                    error: true
+                    message: email telah digunakan
+      description: Mendaftar akun user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: aypk8sozr61ec
+                emial:
+                  type: string
+                  x-stoplight:
+                    id: 18rwbu19debmv
+                password:
+                  type: string
+                  x-stoplight:
+                    id: 5oq1v09zjiza8
+            examples:
+              Example 1:
+                value:
+                  name: jefta
+                  emial: jefta.supraja@gmail.com
+                  password: coba123
+        description: ''
+  /login:
+    post:
+      summary: ''
+      operationId: post-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: 8trn37hm1kp6w
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: id5fh74rnc2mg
+                  loginResult:
+                    type: object
+                    x-stoplight:
+                      id: 1vi6u1dbyene0
+                    properties:
+                      userid:
+                        type: number
+                        x-stoplight:
+                          id: w12faduloi5le
+                      email:
+                        type: string
+                        x-stoplight:
+                          id: 7rx64tfsd3bjb
+                      token:
+                        type: string
+                        x-stoplight:
+                          id: leanztmt4wxlt
+              examples:
+                Example 1:
+                  value:
+                    error: false
+                    message: success
+                    loginResult:
+                      userid: 1
+                      email: jefta.supraja@gmail.com
+                      token: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: wocslw3lm5jb2
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: uihh1w1om3coq
+              examples:
+                Example 1:
+                  value:
+                    error: true
+                    message: email atau password salah
+      description: API untuk menangani  login server
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: mf0c3oivh5d4r
+                password:
+                  type: string
+                  x-stoplight:
+                    id: slp29u5bpesh2
+            examples:
+              Example 1:
+                value:
+                  email: jefta.supraja@gmail.com
+                  password: coba123
+  '/token/{userid}':
+    parameters:
+      - schema:
+          type: string
+        name: userid
+        in: path
+        required: true
+        description: id uset
+    get:
+      summary: Refresh Token
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accesToken:
+                    type: string
+                    x-stoplight:
+                      id: so80zv8lumrt5
+              examples:
+                Example 1:
+                  value:
+                    accesToken: string
+      operationId: get-token-userid
+      description: menangani refresh token
+  /logout:
+    delete:
+      summary: LOGOUT
+      operationId: delete-LOGOUT
+      responses:
+        '200':
+          description: OK
+      description: lOGOUT AKUN USER
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Bearer Token
+          description: Token untuk authorize
+    parameters: []
+  /books:
+    get:
+      summary: Get All Notes
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+                  x-stoplight:
+                    id: 7j47t1g4198fz
+              examples:
+                Example 1:
+                  value:
+                    - id: 0
+                      tittle: Judul Buku
+                      desc: isi buku
+      operationId: get-NOTES
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-books
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: 10u598itbit3k
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: qmfjjn300fvdg
+              examples:
+                Example 1:
+                  value:
+                    error: false
+                    message: Buku berhasil ditambahkan
+      description: menambahkan data buku
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/books'
+            examples:
+              Example 1:
+                value:
+                  id: 0
+                  tittle: Judul Buku
+                  desc: isi buku
+        description: ''
+  '/books/{bookid}':
+    parameters:
+      - schema:
+          type: string
+        name: bookid
+        in: path
+        required: true
+        description: bookid
+    get:
+      summary: Get Books by id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/books'
+              examples:
+                Example 1:
+                  value:
+                    id: 0
+                    tittle: Judul Buku
+                    desc: isi buku
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: 2i7eub6dyxvlo
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: 3ep1e7gtcj6gn
+              examples:
+                Example 1:
+                  value:
+                    error: true
+                    message: buku tidak ditemukan
+      operationId: get-books-id
+      requestBody:
+        content: {}
+      description: mengambil data spesific dari id books
+    put:
+      summary: Update Book By Id
+      operationId: put-books-id
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: evqal7c0jcj9i
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: 3671m019oonr3
+              examples:
+                Example 1:
+                  value:
+                    error: false
+                    message: buku berhasil diubah
+      description: mengubah data buku (mengirim semua data)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/books'
+            examples:
+              Example 1:
+                value:
+                  tittle: Judul Buku 2
+                  desc: isi buku 2
+        description: ''
+    delete:
+      summary: Delete Book By Id
+      operationId: delete-books-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: ljibxg0w807bx
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: 5xo4wuqjexk06
+              examples:
+                Example 1:
+                  value:
+                    error: false
+                    messages: buku berhasil dihapus
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '':
+                    type: string
+                    x-stoplight:
+                      id: gf4g09g7tueam
+      description: Menghapus catatan sesuai dengan id
+      requestBody:
+        content: {}
+    patch:
+      summary: Patch Buku By Id
+      operationId: patch-books-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    x-stoplight:
+                      id: lza0gk2somzzo
+                  '':
+                    type: string
+                    x-stoplight:
+                      id: z1n5d0xdffezt
+      description: Mengubah  data buku( mengirim data yang diperlukan)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/books'
+            examples:
+              Example 1:
+                value:
+                  desc: isi buku yang diubah
+components:
+  schemas:
+    user:
+      title: user
+      x-stoplight:
+        id: u4ql63f9r9hto
+      type: object
+      description: Ini adalah sample model
+      properties:
+        id:
+          type: number
+          x-stoplight:
+            id: q6twgig13qxa3
+        name:
+          type: string
+          x-stoplight:
+            id: gvgz87mbv8nau
+        email:
+          type: string
+          x-stoplight:
+            id: 543y0kj711v4c
+        password:
+          type: string
+          x-stoplight:
+            id: akuegfgt7wli1
+        refresh_token:
+          type: string
+          x-stoplight:
+            id: 2smpl75vocqkp
+      examples:
+        - id: 0
+          name: Jefta Supraja
+          email: jefta.supraja@gmail.com
+          password: coba123
+          refresh_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLUVQQ2tOck5GX1pEUSIsIm5hbWUiOiJkYWZ
+    books:
+      title: Buku
+      x-stoplight:
+        id: nvk7fd2z9nljq
+      type: object
+      properties:
+        id:
+          type: number
+        tittle:
+          type: string
+          x-stoplight:
+            id: qb7x7icts66bg
+        desc:
+          type: string
+          x-stoplight:
+            id: 7ufq7ahrd85o2
+      description: ini adalah model resource yaitu catatan.
+      examples:
+        - id: 0
+          tittle: Judul Buku
+          desc: isi buku
+  securitySchemes: {}
